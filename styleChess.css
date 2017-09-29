@@ -1,0 +1,90 @@
+span
+{
+	display:inline-block;
+	width:60px;
+	height:60px;
+
+}
+
+div[class^="White"],div[class^="Black"]
+{
+	margin-top:5px;
+	width: 45px;
+    height: 45px;
+}
+
+.WhiteKing
+{
+    background: url('Coins/Chess_Pieces.png') 0 0;
+}
+
+.BlackKing
+{
+    background: url('Coins/Chess_Pieces.png') 0 45px;
+}
+
+.WhiteQueen
+{
+    background: url('Coins/Chess_Pieces.png') -45px 0;
+}
+
+.BlackQueen
+{
+    background: url('Coins/Chess_Pieces.png') -45px 45px;
+}
+
+.WhiteBishop
+{
+    background: url('Coins/Chess_Pieces.png') -90px 0;
+}
+
+.BlackBishop
+{
+    background: url('Coins/Chess_Pieces.png') -90px 45px;
+}
+
+.WhiteKnight
+{
+    background: url('Coins/Chess_Pieces.png') -135px 0;
+}
+
+.BlackKnight
+{
+    background: url('Coins/Chess_Pieces.png') -135px 45px;
+}
+
+.WhiteRook
+{
+    background: url('Coins/Chess_Pieces.png') -180px 0;
+}
+
+.BlackRook
+{
+    background: url('Coins/Chess_Pieces.png') -180px 45px;
+}
+
+.WhitePawn
+{
+    background: url('Coins/Chess_Pieces.png') -225px 0;
+}
+
+.BlackPawn
+{
+    background: url('Coins/Chess_Pieces.png') -225px 45px;
+}
+
+.White
+{
+	background : white;
+}
+
+.Black
+{
+	background : #8c8c8c;
+}
+
+.Possible
+{
+	background : yellow;
+	opacity : 0.7;
+}
