@@ -1,4 +1,4 @@
-var selCoin,turn=1,pl1,pl2,possible=[];
+var selCoin,turn,pl1,pl2,possible=[];
 
 function generateBoard()
 {
@@ -28,6 +28,7 @@ function loadCoins(p1,p2)
 {
 	pl1=p1;
 	pl2=p2;
+        turn = p1 == "White" ? 1 : -1;
 	selCoin = "";
 	coins = ["Rook","Knight","Bishop","Queen","King","Bishop","Knight","Rook"];
 	if(p1 == "Black")
@@ -92,7 +93,7 @@ function selectCoin()
 	}
 }
 
-function placeCoin() 
+function placeCoin()
 {
 	if(selCoin != "")
 	{
@@ -103,7 +104,6 @@ function placeCoin()
 			this.removeChild(this.childNodes[0]);
 		}
 		this.appendChild(coin);
-		selCoin.parentNode.addEventListener("click",placeCoin);
 		selCoin.parentNode.removeChild(selCoin);
 		this.removeEventListener("click",placeCoin);
 		selCoin = "";
@@ -113,15 +113,25 @@ function placeCoin()
 
 function possiblePawn(coin)
 {
+        removePossibilities();
 	var cell = coin.parentNode;
 	var pos = getPosition(cell);
-	var posCell = document.getElementById("cell_"+(coin.className.indexOf("White")!=-1?pos.x-1:pos.x+1)+"_"+pos.y);
-	if(posCell.childElementCount>0)
-		return;
-	posCell.className+=" Possible";
-	possible.push(posCell);
-	posCell.addEventListener("click",placeCoin);
-	posCell.addEventListener("click",removePossibilities);
+	var blocked = setPawnMove(coin,pos);
+        if(!blocked && ((pos.x == 7 && coin.className.indexOf(pl1) != -1) || (pos.x == 2 && coin.className.indexOf(pl2) != -1)))
+        {
+            setPawnMove(coin,{x:coin.className.indexOf(pl1)!=-1?pos.x-1:pos.x+1,y:pos.y});
+        }
+}
+
+function setPawnMove(coin,pos)
+{
+    var posCell = document.getElementById("cell_"+(coin.className.indexOf(pl1)!=-1?pos.x-1:pos.x+1)+"_"+pos.y);
+    if(posCell.childElementCount>0)
+	return true;
+    posCell.className+=" Possible";
+    possible.push(posCell);
+    posCell.addEventListener("click",placeCoin);
+    posCell.addEventListener("click",removePossibilities);
 }
 
 function removePossibilities()
@@ -131,5 +141,6 @@ function removePossibilities()
 		var cell = possible.pop();
 		cell.className = cell.className.replace(" Possible","");
 		cell.removeEventListener("click",removePossibilities);
+                cell.removeEventListener("click",placeCoin);
 	}
 }
