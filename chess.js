@@ -92,7 +92,7 @@ function selectCoin()
 	}
 }
 
-function placeCoin()
+function placeCoin() 
 {
 	if(selCoin != "")
 	{
