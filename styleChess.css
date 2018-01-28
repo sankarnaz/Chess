@@ -1,15 +1,15 @@
 span
 {
-	display:inline-block;
-	width:60px;
-	height:60px;
+    display:inline-block;
+    width:60px;
+    height:60px;
 
 }
 
 div[class^="White"],div[class^="Black"]
 {
-	margin-top:5px;
-	width: 45px;
+    margin-top:5px;
+    width: 45px;
     height: 45px;
 }
 
@@ -75,15 +75,15 @@ div[class^="White"],div[class^="Black"]
 
 .White
 {
-	background : white;
+    background : white;
 }
 
 .Black
 {
-	background : #8c8c8c;
+    background : #8c8c8c;
 }
 
 .Possible
 {
-    opacity : 0.7;
+   border-radius: 50px; 
 }

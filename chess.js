@@ -87,7 +87,23 @@ function selectCoin()
 {
     if(checkTurn(this))
     {
-        possiblePawn(this);
+        removePossibilities();
+        if(this.className.indexOf("Pawn")!=-1)
+        {
+            possiblePawn(this);
+        }
+        else if(this.className.indexOf("Bishop")!=-1)
+        {
+            possibleBishop(this);
+        }
+        else if(this.className.indexOf("Rook")!=-1)
+        {
+            possibleRook(this);
+        }
+        else if(this.className.indexOf("Queen")!=-1)
+        {
+            possibleQueen(this);
+        }
 	selCoin = this;
     }
 }
@@ -110,9 +126,55 @@ function placeCoin()
     }
 }
 
-function possiblePawn(coin)
+function possibleBishop(coin)       //Bishop's possible moves
 {
-        removePossibilities();
+    var cell = coin.parentNode;
+    var pos = getPosition(cell);
+    var temp = {x:pos.x,y:pos.y};
+    while((pos.x-- > 1 && pos.y-- > 1) && markPossibleCells(coin,pos));
+    pos = {x:temp.x,y:temp.y};
+    while((pos.x-- > 1 && pos.y++ < 8) && markPossibleCells(coin,pos));
+    pos = {x:temp.x,y:temp.y};
+    while((pos.x++ < 8 && pos.y++ < 8) && markPossibleCells(coin,pos));
+    pos = {x:temp.x,y:temp.y};
+    while((pos.x++ < 8 && pos.y-- > 1) && markPossibleCells(coin,pos));
+}
+
+function possibleRook(coin)       //Bishop's possible moves
+{
+    var cell = coin.parentNode;
+    var pos = getPosition(cell);
+    var temp = {x:pos.x,y:pos.y};
+    while((pos.x-- > 1) && markPossibleCells(coin,pos));
+    pos = {x:temp.x,y:temp.y};
+    while((pos.x++ < 8) && markPossibleCells(coin,pos));
+    pos = {x:temp.x,y:temp.y};
+    while((pos.y++ < 8) && markPossibleCells(coin,pos));
+    pos = {x:temp.x,y:temp.y};
+    while((pos.y-- > 1) && markPossibleCells(coin,pos));
+}
+
+function possibleQueen(coin)
+{
+    possibleBishop(coin);
+    possibleRook(coin);
+}
+
+function markPossibleCells(coin,pos)
+{
+    var posCell = document.getElementById("cell_"+pos.x+"_"+pos.y);
+    if(posCell.childElementCount>0)
+    {
+        possibleAttack(coin,pos);
+        return false;
+    }
+    setPossibleMove(posCell);
+    return true;
+}
+
+
+function possiblePawn(coin)         //Pawn's possible moves
+{
 	var cell = coin.parentNode;
 	var pos = getPosition(cell);
 	var blocked = setPawnMove(coin,pos);
@@ -120,8 +182,8 @@ function possiblePawn(coin)
         {
             setPawnMove(coin,{x:getPlayer(coin)=="p1"?pos.x-1:pos.x+1,y:pos.y});
         }
-        possibleAttack(coin,getPlayer(coin)=="p1"?{x:pos.x-1,y:pos.y-1}:{x:pos.x+1,y:pos.y+1});
-        possibleAttack(coin,getPlayer(coin)=="p1"?{x:pos.x-1,y:pos.y+1}:{x:pos.x+1,y:pos.y-1});
+        possibleAttack(coin,getPlayer(coin)=="p1"?{x:pos.x-1,y:pos.y-1}:{x:pos.x+1,y:pos.y+1});     //check left attack
+        possibleAttack(coin,getPlayer(coin)=="p1"?{x:pos.x-1,y:pos.y+1}:{x:pos.x+1,y:pos.y-1});     //check right attack
 }
 
 function possibleAttack(coin,pos)
@@ -139,6 +201,7 @@ function setPawnMove(coin,pos)
     if(posCell.childElementCount>0)
 	return true;
     setPossibleMove(posCell);
+    return false;
 }
 
 function setPossibleMove(posCell)
