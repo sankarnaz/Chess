@@ -88,6 +88,11 @@ function selectCoin()
     if(checkTurn(this))
     {
         removePossibilities();
+        if(selCoin == this)
+        {
+            selCoin = undefined;
+            return;
+        }
         if(this.className.indexOf("Pawn")!=-1)
         {
             possiblePawn(this);
@@ -103,6 +108,14 @@ function selectCoin()
         else if(this.className.indexOf("Queen")!=-1)
         {
             possibleQueen(this);
+        }
+        else if(this.className.indexOf("Knight")!=-1)
+        {
+            possibleKnight(this);
+        }
+        else if(this.className.indexOf("King")!=-1)
+        {
+            possibleKing(this);
         }
 	selCoin = this;
     }
@@ -160,6 +173,41 @@ function possibleQueen(coin)
     possibleRook(coin);
 }
 
+function possibleKnight(coin)
+{
+    var cell = coin.parentNode;
+    var pos = getPosition(cell);
+    checkBoundaryAndMark(coin,{x:pos.x-2,y:pos.y-1});
+    checkBoundaryAndMark(coin,{x:pos.x-2,y:pos.y+1});
+    checkBoundaryAndMark(coin,{x:pos.x+2,y:pos.y-1});
+    checkBoundaryAndMark(coin,{x:pos.x+2,y:pos.y+1});
+    checkBoundaryAndMark(coin,{x:pos.x-1,y:pos.y-2});
+    checkBoundaryAndMark(coin,{x:pos.x-1,y:pos.y+2});
+    checkBoundaryAndMark(coin,{x:pos.x+1,y:pos.y-2});
+    checkBoundaryAndMark(coin,{x:pos.x+1,y:pos.y+2});
+}
+
+function possibleKing(coin)
+{
+    var cell = coin.parentNode;
+    var pos = getPosition(cell);
+    checkBoundaryAndMark(coin,{x:pos.x-1,y:pos.y});
+    checkBoundaryAndMark(coin,{x:pos.x+1,y:pos.y});
+    checkBoundaryAndMark(coin,{x:pos.x,y:pos.y-1});
+    checkBoundaryAndMark(coin,{x:pos.x,y:pos.y+1});
+    checkBoundaryAndMark(coin,{x:pos.x-1,y:pos.y-1});
+    checkBoundaryAndMark(coin,{x:pos.x-1,y:pos.y+1});
+    checkBoundaryAndMark(coin,{x:pos.x+1,y:pos.y+1});
+    checkBoundaryAndMark(coin,{x:pos.x+1,y:pos.y-1});
+}
+
+function checkBoundaryAndMark(coin,pos)
+{
+    if(pos.x > 0 && pos.x < 9 && pos.y > 0 && pos.y < 9)
+    {
+        markPossibleCells(coin,pos);
+    }
+}
 function markPossibleCells(coin,pos)
 {
     var posCell = document.getElementById("cell_"+pos.x+"_"+pos.y);
