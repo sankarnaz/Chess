@@ -230,8 +230,27 @@ function possiblePawn(coin)         //Pawn's possible moves
         {
             setPawnMove(coin,{x:getPlayer(coin)=="p1"?pos.x-1:pos.x+1,y:pos.y});
         }
-        possibleAttack(coin,getPlayer(coin)=="p1"?{x:pos.x-1,y:pos.y-1}:{x:pos.x+1,y:pos.y+1});     //check left attack
-        possibleAttack(coin,getPlayer(coin)=="p1"?{x:pos.x-1,y:pos.y+1}:{x:pos.x+1,y:pos.y-1});     //check right attack
+        var player = getPlayer(coin);
+        possibleAttack(coin,player=="p1"?{x:pos.x-1,y:pos.y-1}:{x:pos.x+1,y:pos.y+1});     //check left attack
+        possibleAttack(coin,player=="p1"?{x:pos.x-1,y:pos.y+1}:{x:pos.x+1,y:pos.y-1});     //check right attack
+        if((player=="p1" && pos.x == 2) || (player=="p2" && pos.x == 7))
+        {
+            var possible = document.getElementsByClassName("Possible");
+            for(var i=0; i<possible.length; i++)
+            {
+                possible[i].addEventListener("click",addNewQueen);
+            }
+        }
+}
+
+function addNewQueen()
+{
+    var coin = document.createElement("DIV");
+    coin.addEventListener("click", selectCoin);
+    var coinColor = getPlayer(this.childNodes[0]) == "p1" ? pl1 : pl2;
+    coin.className = coinColor + "Queen";
+    this.replaceChild(coin,this.childNodes[0]);
+    this.removeEventListener("click",addNewQueen);
 }
 
 function possibleAttack(coin,pos)
@@ -268,5 +287,6 @@ function removePossibilities()
         cell.className = cell.className.replace(" Possible","");
         cell.removeEventListener("click",removePossibilities);
         cell.removeEventListener("click",placeCoin);
+        cell.removeEventListener("click",addNewQueen);          //only removes if pawn is about to capture queen
     }
 }
